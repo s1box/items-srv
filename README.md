@@ -36,6 +36,8 @@ go build -o items-srv
 
 Resulting binary would be called `items-srv`
 
+If you need fully static binary, set `CGO_ENABLED=0` environment variable before the build.
+
 ### How to run the microservice
 
 1. Build the microservice as described in `How to build` section
