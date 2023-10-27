@@ -56,6 +56,49 @@ If you need fully static binary, set `CGO_ENABLED=0` environment variable before
 4. Run the compiled binary
 5. Check the service status by quering `/status` endpoint (optional)
 
+### How to run the microservice in debug mode
+
+1. Install `delve`:
+```sh
+go install github.com/go-delve/delve/cmd/dlv@v1.21.1
+```
+
+2. Compile microservice binary with debug data:
+```sh
+go build -gcflags "all=-N -l" -o items-srv-dbg
+```
+
+3. Run the binary:
+```sh
+dlv --listen=0.0.0.0:3456 --headless=true --log=true --api-version=2 --accept-multiclient exec ./items-srv-dbg
+```
+
+4. Connect with your debugger.
+
+#### Debugger configuration for VSCode
+
+```json
+{   
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug remote Go server",
+            "type": "go",
+            "request": "attach",
+            "mode": "remote",            
+            "host": "127.0.0.1",
+            "port": 3456,            
+            "substitutePath": [
+                {
+                    "from": "/home/user/items-app/items-srv",
+                    "to": "/path/in/container"
+                }
+            ]
+        }
+    ]
+}
+```
+
 ### License
 
 GNU GPL v2 or any later version.
